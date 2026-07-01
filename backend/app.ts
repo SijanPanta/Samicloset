@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import indexRoutes from './routes/index.js';
 
@@ -9,7 +9,7 @@ app.use(express.json());
 
 app.use('/api', indexRoutes);
 
-app.get('/api/health', (req, res) => {
+app.get('/api/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 

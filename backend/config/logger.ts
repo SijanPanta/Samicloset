@@ -9,4 +9,4 @@ const logger = pino({
   transport,
 });
 
-export default logger;
+export { logger };

@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, FormEvent } from 'react';
 
-function RevealSection({ children }) {
-  const ref = useRef(null);
+function RevealSection({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = ref.current;
     const observer = new IntersectionObserver(
@@ -18,10 +18,10 @@ function RevealSection({ children }) {
 
 export default function Newsletter() {
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setStatus('loading');
     try {

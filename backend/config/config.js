@@ -1,4 +1,6 @@
-import 'dotenv/config';
+"use strict";
+
+require('dotenv/config');
 
 const development = {
   username: process.env.DB_USER,
@@ -24,4 +26,4 @@ const production = {
   },
 };
 
-export default { development, test, production };
+module.exports = { development, test, production };

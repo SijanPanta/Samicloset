@@ -1,6 +1,7 @@
+import { Request, Response } from 'express';
 import * as subscriberService from './subscriber.service.js';
 
-export const create = async (req, res) => {
+export const create = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
     if (!email) return res.status(400).json({ error: 'Email is required' });
@@ -10,6 +11,6 @@ export const create = async (req, res) => {
 
     res.status(201).json({ message: 'Subscribed successfully', subscriber: result.subscriber });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: (err as Error).message });
   }
 };
