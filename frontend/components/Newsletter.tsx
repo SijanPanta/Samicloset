@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, FormEvent } from 'react';
+import api from '@/lib/api';
 
 function RevealSection({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -25,23 +26,18 @@ export default function Newsletter() {
     e.preventDefault();
     setStatus('loading');
     try {
-      const res = await fetch('http://localhost:5000/api/subscribers', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setStatus('success');
-        setMessage('Thanks for subscribing!');
-        setEmail('');
-      } else {
-        setStatus('error');
-        setMessage(data.error || 'Something went wrong');
-      }
-    } catch {
+      const { data } = await api.post('/subscribers', { email });
+      setStatus('success');
+      setMessage('Thanks for subscribing!');
+      setEmail('');
+    } catch (err: unknown) {
       setStatus('error');
-      setMessage('Could not connect to server');
+      if (err && typeof err === 'object' && 'response' in err) {
+        const axiosErr = err as { response?: { data?: { error?: string } } };
+        setMessage(axiosErr.response?.data?.error || 'Something went wrong');
+      } else {
+        setMessage('Could not connect to server');
+      }
     }
   };
 

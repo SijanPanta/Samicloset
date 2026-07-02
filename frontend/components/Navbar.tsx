@@ -2,14 +2,17 @@
 
 import { useEffect, useState } from 'react';
 
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+  
 
   return (
     <nav className={`fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 transition-all duration-300 ${scrolled ? 'py-4' : 'py-6'}`}>
@@ -26,7 +29,7 @@ export default function Navbar() {
         <div className="flex items-center gap-6">
           <span className="material-symbols-outlined text-on-surface hover:opacity-70 transition-opacity duration-300 cursor-pointer">search</span>
           <span className="material-symbols-outlined text-on-surface hover:opacity-70 transition-opacity duration-300 cursor-pointer">shopping_bag</span>
-          <span className="material-symbols-outlined text-on-surface hover:opacity-70 transition-opacity duration-300 cursor-pointer">person</span>
+          <a className="material-symbols-outlined text-on-surface hover:opacity-70 transition-opacity duration-300 cursor-pointer" href="/login"> Login</a>
           <span className="md:hidden material-symbols-outlined text-on-surface cursor-pointer">menu</span>
         </div>
       </div>

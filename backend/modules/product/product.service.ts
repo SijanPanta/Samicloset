@@ -14,3 +14,8 @@ export const getAllProducts = async (query: Record<string, unknown>) => {
 export const getProductBySlug = async (slug: string) => {
   return await Product.findOne({ where: { slug } });
 };
+export const createProduct = async (data: Record<string, unknown>) => {
+  console.log("inside createPost");
+  
+  return await Product.create(data);
+};
