@@ -15,5 +15,7 @@ router.post(
   validateBody(productSchema),
   productController.createProduct,
 );
+router.get('/id/:id', productController.getProductById);
+
 
 export default router;

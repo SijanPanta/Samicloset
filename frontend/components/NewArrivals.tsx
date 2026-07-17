@@ -1,29 +1,8 @@
 'use client';
 
-import { useEffect, useRef, ReactNode } from 'react';
-import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
 import { getNewArrivals } from '../app/api/product';
-
-function RevealSection({ children, delay = 0, className = '' }: { children: ReactNode; delay?: number; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
- 
-  useEffect(() => {
-    const el = ref.current;
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) entry.target.classList.add('active'); },
-      { threshold: 0.1 }
-    );
-    if (el) observer.observe(el);
-    return () => { if (el) observer.unobserve(el); };
-  }, []);
-
-  return (
-    <div ref={ref} className={`reveal ${className}`} style={{ transitionDelay: `${delay}ms` }}>
-      {children}
-    </div>
-  );
-}
+import RevealSection from './RevealSection';
 
 export default function NewArrivals() {
   const { data: NewArrival = [], isLoading, error } = useQuery({
@@ -38,22 +17,42 @@ export default function NewArrivals() {
             <h3 className="font-headline-md text-headline-md mb-2">New Arrivals</h3>
             <p className="text-on-surface-variant font-body-md">Curated pieces for the contemporary silhouette.</p>
           </div>
-          <a className="font-label-caps text-label-caps uppercase tracking-widest border-b border-primary pb-1 hidden md:block" href="#">View All Products</a>
+          <a className="font-label-caps text-label-caps uppercase tracking-widest border-b border-primary pb-1 hover:pb-2 transition-all hidden md:block" href="/product">View All Products</a>
         </div>
       </RevealSection>
-      <div className="grid grid-cols-1 md:grid-cols-12  gap-gutter">
-       {NewArrival && NewArrival.map((product: any) => (
-         <RevealSection key={product.id}>
-           <div className="group cursor-pointer">
-             <div className="relative aspect-[4/5] overflow-hidden mb-6">
-               {/*<Image
-                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                 src={product.image}
-                 alt={product.name}
-                 fill
-                 sizes="(max-width: 768px) 100vw, 58vw"
-               />*/}
-               <div className="absolute inset-0 bg-black opacity-0 transition-opacity duration-300 hover-overlay"></div>
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+       {NewArrival && NewArrival.map((product: any, index: number) => (
+         <RevealSection key={product.id} delay={index * 100}>
+           <a href={`/product/${product.id}`} className="group cursor-pointer block">
+             <div className="relative aspect-[4/5] overflow-hidden mb-6 bg-surface-variant">
+               {product.image ? (
+                 <img
+                   className=" object-cover transition-transform duration-700 group-hover:scale-105"
+                   src={product.image}
+                   alt={product.name}
+                   loading="lazy"
+                   onError={(e) => {
+                     (e.target as HTMLImageElement).style.display = 'none';
+                     const parent = (e.target as HTMLImageElement).parentElement;
+                     if (parent) {
+                       const fallback = document.createElement('span');
+                       fallback.className = 'material-symbols-outlined text-outline text-4xl';
+                       fallback.textContent = 'image';
+                       parent.appendChild(fallback);
+                     }
+                   }}
+                 />
+               ) : (
+                 <div className="absolute inset-0 flex items-center justify-center">
+                   <span className="material-symbols-outlined text-outline text-4xl">image</span>
+                 </div>
+               )}
+               <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-5 transition-opacity duration-300" />
+               <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                 <button className="w-full bg-primary text-on-primary py-3 font-label-caps text-label-caps uppercase tracking-widest text-[11px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+                   Quick View
+                 </button>
+               </div>
              </div>
              <div className="flex justify-between items-start">
                <div>
@@ -62,9 +61,12 @@ export default function NewArrivals() {
                </div>
                <span className="font-body-md text-body-md">${product.price}</span>
              </div>
-           </div>
+           </a>
          </RevealSection>
        ))}
+      </div>
+      <div className="mt-12 text-center md:hidden">
+        <a className="font-label-caps text-label-caps uppercase tracking-widest border-b border-primary pb-1" href="/product">View All Products</a>
       </div>
     </section>
   );

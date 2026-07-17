@@ -9,6 +9,7 @@ body {
   background-color: #fff8f2;
   color: #1e1b16;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .material-symbols-outlined {
@@ -19,12 +20,13 @@ body {
   display: none;
 }
 
-.product-image-hover:hover .hover-overlay {
-  opacity: 0.05;
-}
-
 .kerning-tight {
   letter-spacing: -0.02em;
+}
+
+::selection {
+  background-color: #1e1b16;
+  color: #fff8f2;
 }
 
 .reveal {
@@ -36,4 +38,12 @@ body {
 .reveal.active {
   opacity: 1;
   transform: translateY(0);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #1e1b16;
+  -webkit-box-shadow: 0 0 0px 1000px #fff8f2 inset;
+  transition: background-color 5000s ease-in-out 0s;
 }

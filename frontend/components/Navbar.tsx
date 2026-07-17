@@ -1,38 +1,105 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 
+const navLinks = [
+  { label: 'Collections', href: '#' },
+  { label: 'Lookbook', href: '#' },
+  { label: 'Shop', href: '/product' },
+  { label: 'About', href: '#' },
+];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  
+  const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
 
   return (
-    <nav className={`fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 transition-all duration-300 ${scrolled ? 'py-4' : 'py-6'}`}>
-      <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-        <div className="hidden md:flex gap-10 items-center">
-          <a className="font-label-caps text-label-caps uppercase tracking-widest text-primary border-b border-primary pb-1" href="#">Collections</a>
-          <a className="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Lookbook</a>
-          <a className="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Shop</a>
-          <a className="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">About</a>
+    <>
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'py-4 bg-surface/90 backdrop-blur-md shadow-sm' : 'py-6 bg-transparent'}`}>
+        <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+          <div className="hidden md:flex gap-10 items-center">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className={`font-label-caps text-label-caps uppercase tracking-widest transition-all duration-300 relative pb-1 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:bg-primary after:transition-all after:duration-300 ${
+                    isActive
+                      ? 'text-primary after:w-full'
+                      : 'text-on-surface-variant hover:text-primary after:w-0 hover:after:w-full'
+                  }`}
+                >
+                  {link.label}
+                </a>
+              );
+            })}
+          </div>
+          <a href="/" className="flex-shrink-0">
+            <h1 className="font-headline-md text-headline-md tracking-tighter text-on-surface">Samiksha Closet</h1>
+          </a>
+          <div className="flex items-center gap-6">
+            <button className="material-symbols-outlined text-on-surface hover:opacity-70 transition-opacity duration-300 cursor-pointer" aria-label="Search">search</button>
+            <button className="material-symbols-outlined text-on-surface hover:opacity-70 transition-opacity duration-300 cursor-pointer relative" aria-label="Shopping bag">
+              shopping_bag
+              <span className="absolute -top-1.5 -right-1.5 bg-primary text-on-primary text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-label-caps">0</span>
+            </button>
+            <a className="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300 hidden md:block" href="/login">Sign In</a>
+            <a className="material-symbols-outlined text-on-surface hover:opacity-70 transition-opacity duration-300 cursor-pointer md:hidden" href="/login" aria-label="Sign in">login</a>
+            <button
+              className="md:hidden material-symbols-outlined text-on-surface cursor-pointer transition-transform duration-300"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle menu"
+            >
+              {menuOpen ? 'close' : 'menu'}
+            </button>
+          </div>
         </div>
-        <div className="flex-shrink-0">
-          <h1 className="font-headline-md text-headline-md tracking-tighter text-on-surface">Samiksha Closet</h1>
-        </div>
-        <div className="flex items-center gap-6">
-          <span className="material-symbols-outlined text-on-surface hover:opacity-70 transition-opacity duration-300 cursor-pointer">search</span>
-          <span className="material-symbols-outlined text-on-surface hover:opacity-70 transition-opacity duration-300 cursor-pointer">shopping_bag</span>
-          <a className="material-symbols-outlined text-on-surface hover:opacity-70 transition-opacity duration-300 cursor-pointer" href="/login"> Login</a>
-          <span className="md:hidden material-symbols-outlined text-on-surface cursor-pointer">menu</span>
+      </nav>
+
+      <div className={`fixed inset-0 z-40 transition-all duration-500 ${menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+        <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setMenuOpen(false)} />
+        <div className={`absolute top-0 right-0 h-full w-80 bg-surface shadow-2xl transition-transform duration-500 ${menuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+          <div className="pt-28 px-margin-mobile flex flex-col gap-8">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className={`font-headline-sm text-headline-sm transition-colors duration-300 ${
+                    isActive ? 'text-primary' : 'text-on-surface hover:text-primary'
+                  }`}
+                >
+                  {link.label}
+                </a>
+              );
+            })}
+            <hr className="border-outline-variant/30 my-4" />
+            <a
+              href="/login"
+              onClick={() => setMenuOpen(false)}
+              className="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300"
+            >
+              Sign In
+            </a>
+          </div>
         </div>
       </div>
-    </nav>
+    </>
   );
 }

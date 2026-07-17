@@ -7,6 +7,11 @@ export const getProduct = async (slug: string) => {
   const response = await api.get(`/products/${slug}`);
   return response.data;
 };
+export const getProductById = async (id: string) => {
+  const response = await api.get(`/products/id/${id}`);
+  return response.data;
+};
+
 export const getNewArrivals = async () => {
   const response = await api.get(`/products?new=true`);
   return response.data;
