@@ -3,16 +3,25 @@
 import { FormEvent, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/app/api/auth";
-import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function LoginPage() {
   const [validationError, setValidationError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const { setAuth } = useAuth();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get('redirect') || '/';
+
   const loginMutation = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) =>
-      login(email, password),
+    login(email, password),
+    onSuccess: (data) => {
+      setAuth(data.token, data.user);
+      router.push(redirect);
+    },
   });
-  const router = useRouter();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -28,12 +37,7 @@ export default function LoginPage() {
       return;
     }
 
-    try {
-      await loginMutation.mutateAsync({ email, password });
-      router.push("/");
-    } catch {
-      // Error UI is rendered from mutation state below.
-    }
+    loginMutation.mutate({ email, password });
   };
 
   return (

@@ -16,16 +16,16 @@ const getTokenFromRequest = (req: Request) => {
     return authHeader.slice(7);
   }
 
-  // const cookieHeader = req.headers.cookie;
-  // if (!cookieHeader) return undefined;
+  const cookieHeader = req.headers.cookie;
+  if (!cookieHeader) return undefined;
 
-  // const tokenCookie = cookieHeader
-  //   .split(';')
-  //   .map((cookie) => cookie.trim())
-  //   .find((cookie) => cookie.startsWith('token='));
+  const tokenCookie = cookieHeader
+    .split(';')
+    .map((cookie) => cookie.trim())
+    .find((cookie) => cookie.startsWith('token='));
 
-  // if (!tokenCookie) return undefined;
-  // return decodeURIComponent(tokenCookie.slice('token='.length));
+  if (!tokenCookie) return undefined;
+  return decodeURIComponent(tokenCookie.slice('token='.length));
 };
 
 export const requireAuth = async (
@@ -35,7 +35,6 @@ export const requireAuth = async (
 ) => {
   try {
     const token = getTokenFromRequest(req);
-    console.log(token);
     if (!token) {
       return res.status(401).json({ error: 'Authentication required' });
     }
