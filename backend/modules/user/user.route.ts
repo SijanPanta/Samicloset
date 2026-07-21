@@ -8,5 +8,6 @@ router.post('/', userController.createUser);
 router.post('/login', userController.loginUser);
 router.post('/logout', userController.logoutUser);
 router.get('/me', requireAuth, userController.getMe);
+router.get('/', userController.getAllUsers);
 
 export default router;

@@ -18,8 +18,13 @@ export default function LoginPage() {
     mutationFn: ({ email, password }: { email: string; password: string }) =>
     login(email, password),
     onSuccess: (data) => {
+      console.log(data);
       setAuth(data.token, data.user);
-      router.push(redirect);
+      if(data.user.role==='admin') {
+        router.push('/admin');
+      } else {
+        router.push(redirect);
+      }
     },
   });
 

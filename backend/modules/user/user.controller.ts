@@ -54,3 +54,12 @@ export const logoutUser = (_req: Request, res: Response) => {
   res.clearCookie('token', { httpOnly: true, sameSite: 'none', secure: true });
   res.status(200).json({ message: 'Logged out successfully' });
 };
+
+export const getAllUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await userServices.getAllUsers();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+};

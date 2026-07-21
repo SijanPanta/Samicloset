@@ -2,9 +2,11 @@
 
 import { usePathname } from 'next/navigation';
 import Footer from './Footer';
+import { useAuth } from '@/context/AuthContext';
 
 export default function FooterWrapper() {
+  const { user } = useAuth();
   const pathname = usePathname();
-  if (pathname === '/login') return null;
+  if (pathname === '/login'||user?.role === 'admin') return null;
   return <Footer />;
 }

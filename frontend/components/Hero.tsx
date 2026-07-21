@@ -5,7 +5,7 @@ export default function Hero() {
         <div
           className="w-full h-full bg-cover bg-center"
           style={{
-            backgroundImage: `url(https://lh3.googleusercontent.com/aida-public/AB6AXuBpjJMFjwI8Kp1inT-4LY0OFQLJ_MzrgxVGY1It-1QbJIHWE6Vy7lJuQuxiy_q3Jo5d6zWHNsdgruG75dEQA9ansCoHzMBSKSQf1M3uq2kKEmhJG3WVsghi9n004vkRQwA_x8XiLNzUmwb46_RtQMxbyBYof75tyxlQPhARf2URAJqUhexMIh2iwMQHQMOTpiViQJNUksFX4BTVyCcKtJf_MNld2xHbCoGa38-JfAP2XxBStCEF7g9KqoCBdnDx6STE30S7x5ebeas)`,
+            backgroundImage: `url(/)`,
           }}
         />
       </div>

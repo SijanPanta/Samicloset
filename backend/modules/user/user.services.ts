@@ -43,3 +43,8 @@ export const generateToken = async (user: any) => {
 export const verifyToken = async (token: string) => {
   return jwt.verify(token, process.env.JWT_SECRET as string);
 };
+
+export const getAllUsers = async () => {
+  const users = await User.findAll();
+  return users;
+};

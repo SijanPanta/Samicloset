@@ -9,6 +9,7 @@ const navLinks = [
   { label: 'Lookbook', href: '#' },
   { label: 'Shop', href: '/product' },
   { label: 'About', href: '#' },
+  { label: 'Admin', href: '/admin' }
 ];
 
 export default function Navbar() {
@@ -55,8 +56,9 @@ export default function Navbar() {
                       ? 'text-primary after:w-full'
                       : 'text-on-surface-variant hover:text-primary after:w-0 hover:after:w-full'
                   }`}
-                >
-                  {link.label}
+                >{
+                    link.label === 'Admin' && user?.role !== 'admin' ? null : link.label
+                  }
                 </a>
               );
             })}
