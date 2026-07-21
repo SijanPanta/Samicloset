@@ -7,6 +7,6 @@ import { useAuth } from '@/context/AuthContext';
 export default function FooterWrapper() {
   const { user } = useAuth();
   const pathname = usePathname();
-  if (pathname === '/login'||user?.role === 'admin') return null;
+  if (pathname === '/login'||(pathname === '/admin' && user?.role === 'admin')) return null;
   return <Footer />;
 }

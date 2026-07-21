@@ -61,5 +61,5 @@ export const getAllUsers = async (req: Request, res: Response) => {
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
-  }
+    }
 };

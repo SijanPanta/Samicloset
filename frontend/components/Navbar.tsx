@@ -40,7 +40,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'py-4 bg-surface/90 backdrop-blur-md shadow-sm' : 'py-6 bg-transparent'}`}>
+      <nav className={`fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-md shadow-sm transition-all duration-300 ${scrolled ? 'py-4' : 'py-6'}`}>
         <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
 
           {/* Desktop nav links */}
@@ -66,7 +66,7 @@ export default function Navbar() {
 
           {/* Logo */}
           <a href="/" className="flex-shrink-0">
-            <h1 className="font-headline-md text-headline-md tracking-tighter text-on-surface">Samiksha Closet</h1>
+            <h1 className="font-headline-md sticky text-headline-md tracking-tighter text-on-surface">Samiksha Closet</h1>
           </a>
 
           {/* Right icons */}

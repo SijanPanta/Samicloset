@@ -32,7 +32,7 @@ export default function NewArrivals() {
           </div>
           <a
             onClick={() => router.push("/product")}
-            className="font-label-caps text-label-caps uppercase tracking-widest border-b border-primary pb-1 hover:pb-2 transition-all hidden md:block"
+            className="font-label-caps text-label-caps uppercase tracking-widest border-b border-primary pb-1 cursor-pointer hover:pb-2 transition-all hidden md:block"
           >
             View All Products
           </a>
@@ -101,7 +101,7 @@ export default function NewArrivals() {
       </div>
       <div className="mt-12 text-center md:hidden">
         <a
-          className="font-label-caps text-label-caps uppercase tracking-widest border-b border-primary pb-1"
+          className="font-label-caps text-label-caps uppercase cursor-pointer tracking-widest border-b border-primary pb-1"
           href="/product"
         >
           View All Products
