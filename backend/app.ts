@@ -1,11 +1,13 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import path from 'path';
 import indexRoutes from './routes/index.js';
 
 const app = express();
 
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(express.json());
+app.use('/uploads', express.static(path.resolve('uploads')));
 
 app.use((req, _res, next) => {
   console.log(req.method, req.url);
